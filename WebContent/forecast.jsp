@@ -91,8 +91,16 @@ try {
 	m = mid(html, m.index, "<img src=\"../..", "\""); // 箭头
 	m = mid(html, m.index, "<img src=\"../..", "\"");
 	model.put("未来24小时图标2", m.content);
-	m = mid(html, m.index, "今天白天到夜间：", "</td>");
-	model.put("今天白天到夜间", m.content);
+	MidContent m2 = mid(html, m.index, "今天白天到夜间：", "</td>");
+	if (m2.index != NOT_FOUND.index) {
+		model.put("未来24小时标题", "今天白天　<br/>　到夜间");
+		model.put("未来24小时", m2.content);
+	} else {
+		m2 = mid(html, m.index, "今晚到明天白天：", "</td>");
+		model.put("未来24小时标题", "　今晚到　<br/>明天白天");
+		model.put("未来24小时", m2.content);
+	}
+	m = m2;
 	m = mid(html, m.index, "气　　温：", "<td width=\"215\">", "</td>");
 	model.put("气温", m.content);
 	m = mid(html, m.index, "相对湿度：", "<td>", "</td>");
@@ -153,8 +161,8 @@ try {
 		<br/>
 		<img src="<%=model.get("未来24小时图标2")%>"/>
 	</td>
-	<th>今天白天　<br/>　到夜间：</th>
-	<td><%=model.get("今天白天到夜间")%></td>
+	<th><%=model.get("未来24小时标题")%>：</th>
+	<td><%=model.get("未来24小时")%></td>
 </tr>
 <tr>
 	<th>气　　温：</th>
